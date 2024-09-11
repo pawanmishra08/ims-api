@@ -1,5 +1,5 @@
 import { organizationType } from "@prisma/client";
-import { IsEnum, IsNotEmpty, IsOptional, IsString, Max } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString, Max, MaxLength } from "class-validator";
 
 export class CreateOrganizationDto {
     @IsNotEmpty()
@@ -16,6 +16,6 @@ export class CreateOrganizationDto {
 
     @IsOptional()
     @IsString()
-    @Max(15)
+    @MaxLength(15)
     phone: string;
 }
