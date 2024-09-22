@@ -22,13 +22,13 @@ export class UsersService {
 
     createUserDto.name= captalizeFirstLetterOfEachWordInPhrase(createUserDto.name)
 
-   if (await this.checkIfEmailExist(createUserDto.email)){
-    throw new BadRequestException("this email has been already taken")
-   }
-   
-   if (await this.checkIfmobileExist(createUserDto.mobile)){
-    throw new BadRequestException("this email has been already taken")
-   }
+    if (await this.checkIfEmailExist(createUserDto.email)){
+      throw new BadRequestException("this email has been already taken")
+    }
+
+    if (await this.checkIfmobileExist(createUserDto.mobile)){
+      throw new BadRequestException("this mobile has been already taken")
+    }
     createUserDto.password = await hash(createUserDto.password, 10 );
     return this.prismaService.user.create({ data: createUserDto});
   }
@@ -80,11 +80,11 @@ export class UsersService {
 
   private async checkIfEmailExist(email: string, id?:number): Promise<boolean> {
     const user = await this.prismaService.user.findUnique({
-       where: { email ,}
-       });
+      where: { email ,}
+    });
 
     if (id) {
-     return user ? user.id === id : true;
+      return user ? user.id === id : true;
     }
 
     return !!user;

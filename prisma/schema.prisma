@@ -37,9 +37,9 @@ model organization {
   phone String? @db.VarChar(15)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  
+
   //relation
-  users user[]
+  user user[]
 }
 
 model user {
