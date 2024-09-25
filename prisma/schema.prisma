@@ -11,6 +11,10 @@ enum organizationType{
   retail
   wholesale
 }
+enum DiscountType{
+  rate
+  amount
+}
 
 datasource db {
   provider = "postgresql"
@@ -40,11 +44,11 @@ model organization {
 
   //relation
   user user[]
+  items_organization ItemsOrganization[]
 }
 
 model user {
   @@map("users")
-
 
   id Int @id @default(autoincrement())
   role_id Int
@@ -53,9 +57,38 @@ model user {
   email String @unique
   mobile String @unique @db.VarChar(15)
   password String
-created_at DateTime @default(now())
+  created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  role Role @relation(fields: [role_id] ,references: [ id ])
+  role Role @relation(fields: [role_id] ,references: [id])
   organization organization @relation(fields: [organization_id] , references: [id])
+}
+
+model Items {
+  @@map("items")
+
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String? @db.Text()
+  quantity Int @default(0)
+  price Float @default(0)
+  discount_type DiscountType @default(rate)
+  tax Float @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+
+  items_organization ItemsOrganization[]
+}
+
+model ItemsOrganization{
+  @@map("items_organization")
+
+  item_id Int
+  organization_id Int
+
+  @@id([item_id, organization_id])
+
+  items Items @relation(fields: [item_id] , references: [id] , onDelete: Cascade)
+  organization organization @relation(fields: [organization_id] , references: [id] ,onDelete: Cascade)
 }
