@@ -18,7 +18,7 @@ export class RolesService {
     });
 
     if (role) {
-      throw new BadRequestException(`Role ${createRoleDto.name} has already been taken`);
+      throw new BadRequestException(`Role ${createRoleDto.name} has been already taken`);
     }
 
     return this.prismaService.role.create({ data: createRoleDto });

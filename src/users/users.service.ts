@@ -58,11 +58,11 @@ export class UsersService {
     if (!await this.checkIfEmailExist(updateUserDto.email ,id)){
       throw new BadRequestException("this email has been already taken")
      }
-     
+
      if (!await this.checkIfmobileExist(updateUserDto.mobile , id)){
       throw new BadRequestException("this email has been already taken")
      }
-      
+
      if(updateUserDto.password){
       updateUserDto.password = await hash(updateUserDto.password, 10)
      }
