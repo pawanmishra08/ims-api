@@ -15,18 +15,30 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const roleservice = new RolesService(this.prismaService)
-    const organizationservice = new OrganizationsService(this.prismaService);
-
     await roleservice.findOne(createUserDto.role_id)
-    await organizationservice.findOne(createUserDto.organization_id);
+    // const organizationservice = new OrganizationsService(this.prismaService);
+    //await organizationservice.findOne(createUserDto.organization_id);
 
-    createUserDto.name= captalizeFirstLetterOfEachWordInPhrase(createUserDto.name)
+    const roleobj= await this.prismaService.role.findFirst({
+      where: {
+        name: createUserDto.role
+      },
+    });
 
-    if (await this.checkIfEmailExist(createUserDto.email)){
+    if(!roleobj) {
+      throw new NotFoundException {
+        'unable to find the role ${createuserDto.role}'
+      };
+    }
+    const { role, ...rest }= createUserDto;
+
+    rest.name= captalizeFirstLetterOfEachWordInPhrase(rest.name)
+
+    if (await this.checkIfEmailExist(rest.email)){
       throw new BadRequestException("this email has been already taken")
     }
 
-    if (await this.checkIfmobileExist(createUserDto.mobile)){
+    if (await this.checkIfmobileExist(rest.mobile)){
       throw new BadRequestException("this mobile has been already taken")
     }
     createUserDto.password = await hash(createUserDto.password, 10 );
@@ -68,7 +80,7 @@ export class UsersService {
      }
      return this.prismaService.user.update({
       where: { id },
-      data: updateUserDto
+      data: rest ,
      });
 
   }

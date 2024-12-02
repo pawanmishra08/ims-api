@@ -1,28 +1,33 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOctal, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateUserDto {
-    @IsNotEmpty()
-    @IsNumber()
-    role_id : number;
+  @IsOptional()
+  @IsNumber()
+  role_id: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    organization_id: number;
 
-    @IsNotEmpty()
-    @IsString()
-    name: string;
+  @IsNotEmpty()
+  @IsString()
+  role: string;
 
-    @IsNotEmpty()
-    @IsString()
-    email: string;
+  @IsNotEmpty()
+  @IsNumber()
+  organization_id: number;
 
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(15)
-    mobile: string;
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-    @IsNotEmpty()
-    @IsString()
-    password: string;
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(15)
+  mobile: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 }
