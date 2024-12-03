@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ItemsModule } from './items/items.module';
+import { CustomervendorsModule } from './customervendors/customervendors.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ItemsModule } from './items/items.module';
         AuthModule,
         ConfigModule.forRoot(),
         ItemsModule,
+        CustomervendorsModule,
       ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
