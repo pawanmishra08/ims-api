@@ -7,6 +7,12 @@
 generator client {
   provider = "prisma-client-js"
 }
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 enum organizationType{
   retail
   wholesale
@@ -16,10 +22,6 @@ enum DiscountType{
   amount
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
 
 model Role {
   @@map("roles")

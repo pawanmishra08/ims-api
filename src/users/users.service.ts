@@ -19,17 +19,18 @@ export class UsersService {
     const organizationservice = new OrganizationsService(this.prismaService);
     await organizationservice.findOne(createUserDto.organization_id);
 
-    const roleobj= await this.prismaService.role.findFirst({
+    const roleObj= await this.prismaService.role.findFirst({
       where: {
         name: createUserDto.role
       },
     });
 
-    if(!roleobj) {
+    if(!roleObj) {
       throw new NotFoundException (
         `unable to find the role ${createUserDto.role}`
       );
     }
+    createUserDto.role_id=roleObj.id;
     const { role, ...rest }= createUserDto;
 
     rest.name= captalizeFirstLetterOfEachWordInPhrase(rest.name)
