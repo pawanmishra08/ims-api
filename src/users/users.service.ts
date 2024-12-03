@@ -14,10 +14,10 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const roleservice = new RolesService(this.prismaService)
-    await roleservice.findOne(createUserDto.role_id)
-    // const organizationservice = new OrganizationsService(this.prismaService);
-    //await organizationservice.findOne(createUserDto.organization_id);
+    // const roleservice = new RolesService(this.prismaService)
+    // await roleservice.findOne(createUserDto.role_id)
+    const organizationservice = new OrganizationsService(this.prismaService);
+    await organizationservice.findOne(createUserDto.organization_id);
 
     const roleobj= await this.prismaService.role.findFirst({
       where: {
@@ -26,23 +26,24 @@ export class UsersService {
     });
 
     if(!roleobj) {
-      throw new NotFoundException {
-        'unable to find the role ${createuserDto.role}'
-      };
+      throw new NotFoundException (
+        `unable to find the role ${createUserDto.role}`
+      );
     }
     const { role, ...rest }= createUserDto;
 
     rest.name= captalizeFirstLetterOfEachWordInPhrase(rest.name)
 
     if (await this.checkIfEmailExist(rest.email)){
-      throw new BadRequestException("this email has been already taken")
+      throw new BadRequestException("this email has been alrrrrready taken")
     }
 
     if (await this.checkIfmobileExist(rest.mobile)){
-      throw new BadRequestException("this mobile has been already taken")
+      throw new BadRequestException("this mobile has been alrrrready taken")
     }
-    createUserDto.password = await hash(createUserDto.password, 10 );
-    return this.prismaService.user.create({ data: createUserDto});
+    rest.password = await hash(rest.password, 10 );
+
+    return this.prismaService.user.create({ data: rest ,});
   }
 
   findAll() {
@@ -64,15 +65,18 @@ export class UsersService {
 
 
     if(updateUserDto.name) {
-      updateUserDto.name= captalizeFirstLetterOfEachWordInPhrase(updateUserDto.name)
+      updateUserDto.name= captalizeFirstLetterOfEachWordInPhrase(
+        updateUserDto.name,
+      );
     }
+    const { role, ...rest} = updateUserDto;
 
     if (!await this.checkIfEmailExist(updateUserDto.email ,id)){
-      throw new BadRequestException("this email has been already taken")
+      throw new BadRequestException("this email has been arrlready taken")
      }
 
      if (!await this.checkIfmobileExist(updateUserDto.mobile , id)){
-      throw new BadRequestException("this email has been already taken")
+      throw new BadRequestException("this email has been alrrrready taken")
      }
 
      if(updateUserDto.password){
