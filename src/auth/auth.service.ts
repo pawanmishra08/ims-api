@@ -9,6 +9,7 @@ import { LoginDto } from './dto/login.dto';
 import { compare } from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
 import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -55,5 +56,13 @@ export class AuthService {
     return {
       token,
     };
+  }
+  async getProfile(userId: number) {
+  const user = await this.prismaService.user.findFirst({
+      where: {
+      id: userId,
+      }
+    });
+    if(!user) throw new NotFoundException();
   }
 }
