@@ -1,40 +1,40 @@
-import { IsBoolean, IsNumber, IsOptional, isString, IsString, MaxLength } from "class-validator";
+import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 
-export class CreateCustomervendorDto {
+export class CreateCustomerVendorDto {
 
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    @IsOptional()
-    Description?: string;
+  @IsOptional()
+  @IsString()
+  description?: string;
 
-    @IsString()
-    @IsOptional()
-    email: string;
+  @IsOptional()
+  @IsString()
+  email: string;
 
-    @IsNumber()
-    @IsOptional()
-    @MaxLength(15)
-    phone: number;
+  @IsOptional()
+  @IsString()
+  @MaxLength(15)
+  phone: string;
 
-    @IsString()
-    @IsOptional()
-    street?: string;
+  @IsOptional()
+  @IsString()
+  street?: string;
 
-    @IsString()
-    @IsOptional()
-    city?: string;
+  @IsOptional()
+  @IsString()
+  city?: string;
 
-    @IsString()
-    @IsOptional()
-    district?: string;
+  @IsOptional()
+  @IsString()
+  district?: string;
 
-    @IsString()
-    @IsOptional()
-    province?: string;
+  @IsOptional()
+  @IsString()
+  province?: string;
 
-    @IsString()
-    @IsOptional()
-    is_vendor?: boolean= false;
+  @IsBoolean()
+  @IsOptional()
+  isVendor: boolean = false;
 }
